@@ -19,11 +19,13 @@ namespace Deforestation.Recolectables
 
 		#region Fields
 		[SerializeField] private InteractableInfo _interactableInfo;
-		#endregion
+        [SerializeField] private GameObject _outlineObject;
 
-		#region Unity Callbacks
-		// Start is called before the first frame update
-		void Start()
+        #endregion
+
+        #region Unity Callbacks
+        // Start is called before the first frame update
+        void Start()
 		{
 
 		}
@@ -46,9 +48,20 @@ namespace Deforestation.Recolectables
 		{
 			Destroy(gameObject);
 		}
-		#endregion
+        public void EnableOutline()
+        {
+            if (_outlineObject != null)
+                _outlineObject.transform.localScale = Vector3.one * 1.05f;
+        }
 
-		#region Private Methods
-		#endregion
-	}
+        public void DisableOutline()
+        {
+            if (_outlineObject != null)
+                _outlineObject.transform.localScale = Vector3.zero;
+        }
+        #endregion
+
+        #region Private Methods
+        #endregion
+    }
 }

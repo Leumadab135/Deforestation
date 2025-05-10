@@ -5,81 +5,93 @@ using System;
 
 namespace Deforestation.Interaction
 {
-	public class InteractionSystem : MonoBehaviour
-	{
-		#region Properties
-		public event Action<string> OnShowInteraction;
-		public event Action OnHideInteraction;
-		#endregion
+    public class InteractionSystem : MonoBehaviour
+    {
+        #region Properties
+        public event Action<string> OnShowInteraction;
+        public event Action OnHideInteraction;
+        #endregion
 
-		#region Fields
-		[SerializeField] float _widthDetector = 1;
-		[SerializeField] float _distanceDetector = 5;
-		[SerializeField] Inventory _inventory;
-		private bool _interactebleDetected = false;
-		private IInteractable _currentInteraction;
-		#endregion
+        #region Fields
+        [SerializeField] float _widthDetector = 1;
+        [SerializeField] float _distanceDetector = 5;
+        [SerializeField] Inventory _inventory;
+        private bool _interactebleDetected = false;
+        private IInteractable _currentInteraction;
+        #endregion
 
-		#region Unity Callbacks		
-		private void Update()
-		{
-			if (_interactebleDetected && Input.GetKeyUp(KeyCode.E))
-			{
-				//Si la interaccion es Recolectable, la guardamos como tal
-				if (_currentInteraction is Recolectable recolectable)
-				{
-					_inventory.AddRecolectable(recolectable.Type, recolectable.Count);
-					recolectable.Interact();
-				}
-				//Mahine Interaction
-				if (_currentInteraction is MachineInteraction machineInteraction)
-				{
-					machineInteraction.Interact();
-				}
-			}
-		}
-		void FixedUpdate()
-		{
-			RaycastHit hit;
-			if (Physics.SphereCast(Camera.main.transform.position, 0.5f, Camera.main.transform.forward, out hit, 5))
-			{
-				//print(hit.collider.name); //Para saber que estamos detectando para depurar si alguna deteccion falla.
-				IInteractable interaction = hit.collider.GetComponent<IInteractable>();
-				if (interaction != null)
-				{
-					InteractableInfo info = interaction.GetInfo();
-					OnShowInteraction.Invoke("E - To " + info.Action + " " + info.Type);
-					_interactebleDetected = true;
-					_currentInteraction = interaction;
-					return;
-				}
-			}
-			_interactebleDetected = false;
-			OnHideInteraction.Invoke();
-			
-		}
-		#endregion
+        #region Unity Callbacks		
+        private void Update()
+        {
+            if (_interactebleDetected && Input.GetKeyUp(KeyCode.E))
+            {
+                if (_currentInteraction is Recolectable recolectable)
+                {
+                    _inventory.AddRecolectable(recolectable.Type, recolectable.Count);
+                    recolectable.Interact();
+                }
+                if (_currentInteraction is MachineInteraction machineInteraction)
+                {
+                    machineInteraction.Interact();
+                }
+            }
+        }
+        void FixedUpdate()
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 5))
+            {
+                IInteractable interaction = hit.collider.GetComponent<IInteractable>();
+                if (interaction != null)
+                {
 
-		#region Public Methods
-		#endregion
+                    if (interaction != _currentInteraction)
+                    {
+                        _currentInteraction?.DisableOutline();
+                        _currentInteraction = interaction;
+                        _currentInteraction.EnableOutline();
+                    }
 
-		#region Private Methods
-		#endregion
+                    InteractableInfo info = interaction.GetInfo();
+                    OnShowInteraction.Invoke("Press E to " + info.Action + " " + info.Type);
+                    _interactebleDetected = true;
+                    return;
+                }
+            }
 
-		void OnDrawGizmos()
-		{
-			if (Camera.main != null)
-			{
-				Vector3 startPosition = Camera.main.transform.position;
-				Vector3 direction = Camera.main.transform.forward;
-				float radius = 0.5f;
-				float distance = 5f;
+            // Si no hay interacción detectada
+            if (_interactebleDetected)
+            {
+                _currentInteraction?.DisableOutline();
+                _currentInteraction = null;
+                _interactebleDetected = false;
+                OnHideInteraction.Invoke();
+            }
+        }
 
-				Gizmos.color = Color.blue;
-				Gizmos.DrawWireSphere(startPosition, radius);
-				Gizmos.DrawWireSphere(startPosition + direction * distance, radius);
-				Gizmos.DrawLine(startPosition, startPosition + direction * distance);
-			}
-		}
-	}
+        #endregion
+
+        #region Public Methods
+
+        #endregion
+
+        #region Private Methods
+        #endregion
+
+        void OnDrawGizmos()
+        {
+            if (Camera.main != null)
+            {
+                Vector3 startPosition = Camera.main.transform.position;
+                Vector3 direction = Camera.main.transform.forward;
+                float radius = 0.5f;
+                float distance = 5f;
+
+                Gizmos.color = Color.blue;
+                Gizmos.DrawWireSphere(startPosition, radius);
+                Gizmos.DrawWireSphere(startPosition + direction * distance, radius);
+                Gizmos.DrawLine(startPosition, startPosition + direction * distance);
+            }
+        }
+    }
 }
