@@ -38,10 +38,10 @@ namespace Deforestation.Machine
 		// Update is called once per frame
 		void Update()
 		{
-			//TODO: Mover a Input System
-			if (Input.GetKeyUp(KeyCode.Escape))
-			{
-				StopDriving();
+            //TODO: Mover a Input System
+            if (Input.GetKeyUp(KeyCode.Q) && GameController.Instance.MachineModeOn)
+            {
+                StopDriving();
 			}
 		}		
 
@@ -50,9 +50,9 @@ namespace Deforestation.Machine
 		#region Public Methods
 		public void StopDriving()
 		{
-			GameController.Instance.MachineMode(false);
 			StopMoving();
 			OnMachineDriveChange?.Invoke(false);
+			GameController.Instance.MachineMode(false);
 
 		}
 

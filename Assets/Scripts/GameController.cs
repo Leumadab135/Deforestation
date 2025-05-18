@@ -6,6 +6,7 @@ using Deforestation.Interaction;
 using Cinemachine;
 using System;
 using static UnityEngine.InputSystem.UI.VirtualMouseInput;
+using UnityEditor;
 
 namespace Deforestation
 {
@@ -41,6 +42,7 @@ namespace Deforestation
         [SerializeField] protected HealthSystem _playerHealth;
         [SerializeField] protected Inventory _inventory;
         [SerializeField] protected InteractionSystem _interactionSystem;
+        [SerializeField] protected Transform _playerSpawn;
 
         [Header("Camera")]
         [SerializeField] protected CinemachineVirtualCamera _virtualCamera;
@@ -102,6 +104,7 @@ namespace Deforestation
                 _uiController.HideInteraction();
                 Cursor.lockState = CursorLockMode.None;
                 //Camera
+
                 _virtualCamera.Follow = _machineFollow;
 
                 _machine.enabled = true;
@@ -119,6 +122,8 @@ namespace Deforestation
                 _machine.WeaponController.enabled = false;
                 _machine.GetComponent<MachineMovement>().enabled = false;
                 _player.transform.parent = null;
+                _player.transform.position = _playerSpawn.transform.position;
+                _player.transform.rotation = Quaternion.identity;
 
                 //Camera
                 _virtualCamera.Follow = _playerFollow;
