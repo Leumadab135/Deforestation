@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 23466419510729776}
   - component: {fileID: 6411588067432386391}
   - component: {fileID: 3922087406855662536}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RedWood 8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,9 +127,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1970681966781816}
   serializedVersion: 4
-  m_Mass: 200
+  m_Mass: 100
   m_Drag: 1
-  m_AngularDrag: 10
+  m_AngularDrag: 2
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -641,7 +641,7 @@ MonoBehaviour:
     nodeIDs: 04000000
     parentGroupID: 1
     childGroupIDs: 050000004a0100007a060000
-    lodQualityMultiplier: 1
+    lodQualityMultiplier: 2
     geometryMode: 0
     materialBranch: {fileID: 2100000, guid: cf69de7e1b41130409b70635b3e8092b, type: 2}
     materialBreak: {fileID: 0}

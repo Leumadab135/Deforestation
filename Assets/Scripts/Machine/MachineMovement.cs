@@ -68,7 +68,7 @@ namespace Deforestation.Machine
 
 			// Calcula la máscara de la capa correctamente
 			int layerMask = 1 << LayerMask.NameToLayer("Terrain");
-			
+
 			// Lanza un rayo hacia abajo desde la posición del objeto
 			if (!Physics.Raycast(transform.position, direction, out hit, maxDistance, layerMask))
 				_rb.AddRelativeForce(direction * force);
@@ -102,9 +102,7 @@ namespace Deforestation.Machine
 		#region Public Methods
 
 		#endregion
-		private void OnDrawGizmos()
-		{
-		}
+
 	}
 	
 }
