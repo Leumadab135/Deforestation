@@ -17,7 +17,6 @@ namespace Deforestation.Machine
         public WeaponController WeaponController;
         public Action<bool> OnMachineDriveChange;
         private bool _onAnimation;
-        private bool _onStopMotion;
 
         #endregion
 
@@ -77,7 +76,6 @@ namespace Deforestation.Machine
             _anim.SetTrigger("WakeUp");
             _anim.SetBool("Move", machineMode);
             OnMachineDriveChange?.Invoke(true);
-            _onStopMotion = false;
             StartAnimation();
             StartCoroutine(CanGetOut());
         }
@@ -90,7 +88,7 @@ namespace Deforestation.Machine
 
         IEnumerator GetOutAfterAnimation()
         {
-            yield return new WaitForSeconds(8);
+            yield return new WaitForSeconds(7);
             GameController.Instance.MachineMode(false);
         }
 
