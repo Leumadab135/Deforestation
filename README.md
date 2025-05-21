@@ -4,7 +4,7 @@ Deforestation
 
 # Concept
 
-Somos un trabajador de una empresa de recoleccion de recursos. Nuestro robot recolector se ha estropeado. Tenemos que arreglarlo y volver a base mientras recogemos recursos.
+Somos un trabajador de una empresa de recoleccion de recursos. Nuestro robot recolector se ha estropeado al caer de una montaña. Necesitamos conseguir recursos para destruir todo a nuestro paso, protegersmps de las criaturas de la isla y hacer funcionar el robot. Nuestro objetivo serrá llegar a lo más alto de la isla para mandar un aviso de rescate a la empresa de recolección. 
 
 # Genero
 
