@@ -6,6 +6,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Runtime.CompilerServices;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 
 namespace Deforestation.Machine
 {
@@ -33,8 +34,9 @@ namespace Deforestation.Machine
             _health = GetComponent<HealthSystem>();
             _movement = GetComponent<MachineMovement>();
             _anim = GetComponent<Animator>();
-
         }
+
+
         // Start is called before the first frame update
         void Start()
         {
@@ -67,6 +69,7 @@ namespace Deforestation.Machine
             StopMoving();
             StartAnimation();
             StartCoroutine(CanGetOut());
+            _movement.energyTimer = 0;
         }
 
         public void StartDriving(bool machineMode)
@@ -101,7 +104,7 @@ namespace Deforestation.Machine
         #region Private Methods
         private void StartAnimation()
         {
-            _onAnimation = true;
+            _onAnimation = true; 
         }
 
         private void StopAnimation()

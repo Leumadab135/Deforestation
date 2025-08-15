@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Deforestation
 {
@@ -18,7 +19,11 @@ namespace Deforestation
 			_currentHealth = _maxHealth;
 		}
 
-		public void TakeDamage(float damage)
+        private void Start()
+        {
+            _currentHealth = _maxHealth;
+        }
+        public void TakeDamage(float damage)
 		{
 			_currentHealth -= damage;
 			OnHealthChanged?.Invoke(_currentHealth);
@@ -46,7 +51,6 @@ namespace Deforestation
 		private void Die()
 		{
 			OnDeath?.Invoke();
-			// Aquí puedes añadir lógica adicional para la muerte, como destruir el objeto.
 		}
 	}
 

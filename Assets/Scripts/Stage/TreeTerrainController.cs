@@ -1,76 +1,100 @@
 using UnityEngine;
-using System;
 using System.Collections.Generic;
 
 namespace Deforestation
 {
+    public class TreeTerrainController : MonoBehaviour
+    {
+        #region Properties
+        public TreeInstance[] Trees => _runtimeTrees;
+        #endregion
 
-	public class TreeTerrainController : MonoBehaviour
-	{
-		#region Properties
-		public TreeInstance[] Trees => _trees;
-		#endregion
+        #region Fields
+        [SerializeField] private Tree _treeDetectionPrefab;
+        [SerializeField] private Tree _treePrefab;
 
-		#region Fields
-		[SerializeField] private Tree _treeDetectionPrefab;
-		[SerializeField] private Tree _treePrefab;
-		private TreeInstance[] _trees;
-		Terrain _terrain;
-		#endregion
+        private readonly List<Tree> _treeDetectors = new();
 
-		#region Unity Callbacks
-		// Start is called before the first frame update
-		void Start()
-		{
-			_terrain = Terrain.activeTerrain;
-			_trees = _terrain.terrainData.treeInstances;
+        private TreeInstance[] _originalTrees;   // copia intacta
+        private TreeInstance[] _runtimeTrees;    // sobre este trabajamos
 
-			InitializeTrees();
-		}
+        private Terrain _terrain;
+        #endregion
 
-		private void InitializeTrees()
-		{
-			for (int i = _trees.Length - 1; i >= 0; i--)
-			{
-				TreeInstance tree = _trees[i];
-				Vector3 treeWorldPos = TreeToWorldPosition(tree);
-				Tree treeDetector = Instantiate(_treeDetectionPrefab, treeWorldPos, Quaternion.identity);
-				treeDetector.transform.parent = transform;
-				treeDetector.Index = i;
-			}
-		}
+        #region Unity Callbacks
+        private void Start()
+        {
+            _terrain = Terrain.activeTerrain;
 
-		public GameObject DestroyTree(int i, Vector3 treeWorldPos)
-		{
-			//create tree
-			Tree newTree = Instantiate(_treePrefab, treeWorldPos, Quaternion.identity);
+            // Copia profunda para conservar el estado original
+            _originalTrees = (TreeInstance[])_terrain.terrainData.treeInstances.Clone();
+            _runtimeTrees = (TreeInstance[])_originalTrees.Clone();
 
-			RemoveTreeFromTerrain(i);
-			return newTree.gameObject;
-		}
+            InitializeTrees();
+        }
 
-		void OnDestroy()
-		{
-			_terrain.terrainData.treeInstances = _trees;
-		}
-		#endregion
+        private void OnDestroy()
+        {
+            // Restauramos el asset a su estado original
+            _terrain.terrainData.treeInstances = _originalTrees;
+            _terrain.Flush();
+        }
+        #endregion
 
-		#region Public Methods
-		public Vector3 TreeToWorldPosition(TreeInstance tree)
-		{
-			return Vector3.Scale(tree.position, _terrain.terrainData.size) + _terrain.transform.position;
-		}
-		public void RemoveTreeFromTerrain(int index)
-		{
-			//TODO: Reasignar todos los indices de todos los tree detectors.
-			List<TreeInstance> trees = new List<TreeInstance>(_terrain.terrainData.treeInstances);
-			trees.RemoveAt(index);
-			_terrain.terrainData.treeInstances = trees.ToArray();
-		}
-		#endregion
+        #region Public Methods
+        public Vector3 TreeToWorldPosition(TreeInstance tree)
+        {
+            return Vector3.Scale(tree.position, _terrain.terrainData.size) +
+                   _terrain.transform.position;
+        }
 
-		#region Private Methods
+        public GameObject DestroyTree(int index, Vector3 worldPos)
+        {
+            Tree fallen = Instantiate(_treePrefab, worldPos, Quaternion.identity);
 
-		#endregion
-	}
+            if (index >= 0 && index < _treeDetectors.Count)
+            {
+                Destroy(_treeDetectors[index].gameObject);
+                _treeDetectors.RemoveAt(index);
+            }
+
+            RemoveTreeFromTerrain(index);
+            UpdateDetectorIndices(index);
+
+            return fallen.gameObject;
+        }
+        #endregion
+
+        #region Private Methods
+        private void InitializeTrees()
+        {
+            for (int i = 0; i < _runtimeTrees.Length; i++)
+            {
+                Vector3 pos = TreeToWorldPosition(_runtimeTrees[i]);
+                Tree detector = Instantiate(_treeDetectionPrefab, pos, Quaternion.identity);
+                detector.transform.parent = transform;
+                detector.Index = i;
+                _treeDetectors.Add(detector);
+            }
+        }
+
+        private void RemoveTreeFromTerrain(int index)
+        {
+            List<TreeInstance> list = new(_runtimeTrees);
+            list.RemoveAt(index);
+            _runtimeTrees = list.ToArray();
+
+            _terrain.Flush();
+            _terrain.terrainData.treeInstances = _runtimeTrees;
+        }
+
+        private void UpdateDetectorIndices(int start)
+        {
+            for (int i = start; i < _treeDetectors.Count; i++)
+                _treeDetectors[i].Index = i;
+        }
+        #endregion
+    }
 }
+
+

@@ -26,7 +26,6 @@ namespace Deforestation
 
 		private void Die()
 		{
-			Destroy(gameObject);
 
 			int veces = Random.Range(1, 5); // Genera un número aleatorio entre 1 y 4
 			for (int i = 0; i < veces; i++)
@@ -39,6 +38,7 @@ namespace Deforestation
 					Instantiate(_fire, hit.position, Quaternion.identity);
 				}
 			}
+			Destroy(gameObject);
 		}
 
 		#endregion

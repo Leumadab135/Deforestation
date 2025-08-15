@@ -7,6 +7,8 @@ using Cinemachine;
 using System;
 using static UnityEngine.InputSystem.UI.VirtualMouseInput;
 using UnityEditor;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 namespace Deforestation
 {
@@ -36,6 +38,7 @@ namespace Deforestation
         }
         #endregion
 
+        [SerializeField] protected GameObject _spawnPoint;
         #region Fields
         [Header("Player")]
         [SerializeField] protected CharacterController _player;
@@ -66,16 +69,18 @@ namespace Deforestation
         // Start is called before the first frame update
         void Start()
         {
+            _player.transform.position = _spawnPoint.transform.position;
+
             //UI Update
             _playerHealth.OnHealthChanged += _uiController.UpdatePlayerHealth;
             _machine.HealthSystem.OnHealthChanged += _uiController.UpdateMachineHealth;
+
+            _playerHealth.OnDeath += Dead;
+            _machine.HealthSystem.OnDeath += Dead;
+
             MachineModeOn = false;
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-        }
         #endregion
 
         #region Public Methods
@@ -138,6 +143,21 @@ namespace Deforestation
         #endregion
 
         #region Private Methods
+        private void Dead()
+        {
+            StartCoroutine(DeathDelay());
+            SceneManager.LoadScene("Death Menu");
+        }
+
+        IEnumerator DeathDelay()
+        {
+            yield return new WaitForSeconds(0.2f);
+
+            MachineModeOn = false;
+            _player.transform.position = _spawnPoint.transform.position;
+
+            SceneManager.LoadScene("Death Menu");
+        }
         #endregion
     }
 

@@ -53,6 +53,9 @@ MonoBehaviour:
   - {fileID: 4003784123300178105, guid: 815568d5c48f22249897cf8df3777ee1, type: 3}
   - {fileID: 4003784123300178105, guid: 815568d5c48f22249897cf8df3777ee1, type: 3}
   - {fileID: 4003784123300178105, guid: 815568d5c48f22249897cf8df3777ee1, type: 3}
+  - {fileID: 1266612675375492439, guid: 261d9a38ee8fcb140af4053e7a629823, type: 3}
+  - {fileID: 1266612675375492439, guid: c5051c32e9dfda94e9ba3da162752cc4, type: 3}
+  - {fileID: 1266612675375492439, guid: c5051c32e9dfda94e9ba3da162752cc4, type: 3}
   - {fileID: 1266612675375492439, guid: c5051c32e9dfda94e9ba3da162752cc4, type: 3}
   _rockPrefab:
   - {fileID: 100000, guid: 857d22af654fa504c856c2b69095df3b, type: 3}

@@ -13,7 +13,6 @@ namespace Deforestation.Interaction
         #endregion
 
         #region Fields
-        [SerializeField] float _widthDetector = 1;
         [SerializeField] float _distanceDetector = 5;
         [SerializeField] Inventory _inventory;
         private bool _interactebleDetected = false;

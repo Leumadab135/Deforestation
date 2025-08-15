@@ -4,9 +4,12 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - CinemachineTarget
   - Crystal
   - Tree
+  - PlayerSpawn
+  - PlayerFollow
+  - MachineFollow
+  - FPSAim
   layers:
   - Default
   - TransparentFX

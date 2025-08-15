@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections;
 namespace Deforestation.Interaction
 {
     public enum MachineInteractionType
@@ -16,8 +17,11 @@ namespace Deforestation.Interaction
         #region Fields
         [SerializeField] protected MachineInteractionType _type;
         [SerializeField] protected Transform _target;
+        [SerializeField] protected Transform _startPosition;
         [SerializeField] protected InteractableInfo _interactableInfo;
         [SerializeField] private GameObject _outlineObject;
+        [SerializeField] private AudioSource _openDoor;
+        [SerializeField] private AudioSource _closeDoor;
 
         #endregion
 
@@ -34,6 +38,8 @@ namespace Deforestation.Interaction
             {
                 //Move Door
                 transform.position = _target.position;
+                _openDoor.Play();
+                StartCoroutine(CloseDoor());
             }
             if (_type == MachineInteractionType.Stairs)
             {
@@ -45,6 +51,14 @@ namespace Deforestation.Interaction
                 GameController.Instance.MachineMode(true);
             }
         }
+
+        IEnumerator CloseDoor()
+        {
+            yield return new WaitForSeconds(5);
+            _closeDoor.Play();
+            transform.position = _startPosition.position;
+        }
+
         public void EnableOutline()
         {
             if (_outlineObject != null)

@@ -27,6 +27,7 @@ namespace Deforestation.UI
 		[Header("Inventory")]
 		[SerializeField] private TextMeshProUGUI _crystal1Text;
 		[SerializeField] private TextMeshProUGUI _crystal2Text;
+		[SerializeField] private TextMeshProUGUI _crystal3Text;
 		[Header("Interacytion")]
 		[SerializeField] private InteractionPanel _interactionPanel;
 		[Header("Live")]
@@ -91,10 +92,18 @@ namespace Deforestation.UI
 				_crystal1Text.text = _inventory.InventoryStack[RecolectableType.SuperCrystal].ToString();
 			else
 				_crystal1Text.text = "0";
+			
+			
 			if (_inventory.InventoryStack.ContainsKey(RecolectableType.HyperCrystal))
 				_crystal2Text.text = _inventory.InventoryStack[RecolectableType.HyperCrystal].ToString();
 			else
 				_crystal2Text.text = "0";
+			
+			
+			if (_inventory.InventoryStack.ContainsKey(RecolectableType.BoostCrystal))
+				_crystal3Text.text = _inventory.InventoryStack[RecolectableType.BoostCrystal].ToString();
+			else
+				_crystal3Text.text = "0";
 		}
 
 		private void FXVolumeChange(float value)

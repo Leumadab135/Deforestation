@@ -8,6 +8,7 @@ namespace Deforestation.Recolectables
 	{
 		SuperCrystal,
 		HyperCrystal,
+		BoostCrystal
 	}
 	public class Recolectable : MonoBehaviour, IInteractable
 	{
