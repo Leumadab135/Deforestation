@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -14,6 +12,10 @@ public class DeathMenuController : MonoBehaviour
     {
         _retry.onClick.AddListener(RetryGame);
         _quitButton.onClick.AddListener(QuitGame);
+
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        Cursor.lockState = CursorLockMode.None;
+
     }
 
     private void RetryGame()

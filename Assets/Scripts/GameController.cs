@@ -70,6 +70,8 @@ namespace Deforestation
         void Start()
         {
             _player.transform.position = _spawnPoint.transform.position;
+            Cursor.lockState = CursorLockMode.Locked;
+            MachineModeOn = false;
 
             //UI Update
             _playerHealth.OnHealthChanged += _uiController.UpdatePlayerHealth;
@@ -78,7 +80,6 @@ namespace Deforestation
             _playerHealth.OnDeath += Dead;
             _machine.HealthSystem.OnDeath += Dead;
 
-            MachineModeOn = false;
         }
 
         #endregion
@@ -146,13 +147,11 @@ namespace Deforestation
         private void Dead()
         {
             StartCoroutine(DeathDelay());
-            SceneManager.LoadScene("Death Menu");
         }
 
         IEnumerator DeathDelay()
         {
             yield return new WaitForSeconds(0.2f);
-
             MachineModeOn = false;
             _player.transform.position = _spawnPoint.transform.position;
 

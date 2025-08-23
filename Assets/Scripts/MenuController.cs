@@ -13,6 +13,9 @@ public class MenuController : MonoBehaviour
     {
         _playButton.onClick.AddListener(LoadGame);
         _quitButton.onClick.AddListener(QuitGame);
+
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        Cursor.lockState = CursorLockMode.None;
     }
 
     private void LoadGame()

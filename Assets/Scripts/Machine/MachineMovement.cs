@@ -51,7 +51,7 @@ namespace Deforestation.Machine
                 GameController.Instance.MachineController.StopMoving();
                 energyTimer = 0f;
             }
-            
+
             if (Input.GetKeyUp(KeyCode.Space) && _inventory.HasResource(RecolectableType.BoostCrystal) && _canJump)
             {
                 _rb.AddForce(Vector3.up * _jumpForce);
@@ -105,7 +105,10 @@ namespace Deforestation.Machine
             HealthSystem target = collision.gameObject.GetComponent<HealthSystem>();
             if (target != null)
             {
-                target.TakeDamage(10);
+                if (target.tag == "Player")
+                    return;
+                else
+                    target.TakeDamage(10);
             }
         }
 

@@ -80,13 +80,22 @@ namespace Deforestation
 
         private void RemoveTreeFromTerrain(int index)
         {
-            List<TreeInstance> list = new(_runtimeTrees);
-            list.RemoveAt(index);
-            _runtimeTrees = list.ToArray();
+            if (index < 0 || index >= _runtimeTrees.Length)
+                return;
 
-            _terrain.Flush();
+            // Si tienes referencias a los objetos del árbol:
+            // Destroy(_treeObjects[index]);
+
+            // Eliminamos la instancia del terreno de manera segura
+            var currentInstances = new List<TreeInstance>(_runtimeTrees);
+            currentInstances.RemoveAt(index);
+
+
+            // Actualizamos los datos del terreno
+            _runtimeTrees = currentInstances.ToArray();
             _terrain.terrainData.treeInstances = _runtimeTrees;
         }
+
 
         private void UpdateDetectorIndices(int start)
         {
