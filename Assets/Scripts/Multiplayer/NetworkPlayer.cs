@@ -1,3 +1,4 @@
+using Cinemachine;
 using Deforestation;
 using Deforestation.Interaction;
 using Deforestation.Network;
@@ -32,6 +33,8 @@ namespace Deforestation.Network
             if (photonView.IsMine)
             {
                 _gameController.InitializeMe(_health,_controller,_inventory,_interactions, _playerFollow);
+                CinemachineVirtualCamera vc = FindFirstObjectByType<CinemachineVirtualCamera>();
+                vc.Follow = _playerFollow;
                 _3dAvatar.SetActive(false);
             }
             else
